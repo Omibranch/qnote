@@ -1,5 +1,5 @@
 <!-- qnote_logo -->
-
+<img src='https://i.ibb.co/YByQ9xr6/qnote-logo.jpg'>
 <div align="center">
 
 # qnote
@@ -10,83 +10,11 @@
 [![Rust](https://img.shields.io/badge/Rust-stable-ce422b?style=flat-square&logo=rust)](https://www.rust-lang.org)
 [![Platform](https://img.shields.io/badge/Platform-Linux-fcc624?style=flat-square&logo=linux&logoColor=333)](https://github.com/Omixxxxxxx/qnote/releases)
 
-**Минималистичный редактор заметок. Markdown. Экспорт в PDF. Без лишнего.**
+**Minimalistic pretty file redactor.**
 
 [English](#english) · [Русский](#russian)
 
 </div>
-
----
-
-<a name="russian"></a>
-
-## Русский
-
-<!-- qnote_logo -->
-
-qnote — лёгкий десктопный редактор текстовых заметок на базе Tauri v2 + React. Поддерживает Markdown с живым предпросмотром, историю файлов с поиском, экспорт в PDF и кастомное оформление окна.
-
-### Возможности
-
-- Редактирование plain text и Markdown (`.md`) в одном приложении
-- Live-предпросмотр Markdown с поддержкой GFM и HTML
-- Панель форматирования: заголовки, жирный, курсив, код, цитаты, таблицы, ссылки, изображения
-- Сворачиваемый редактор в режиме Preview
-- История файлов с группировкой по дням и быстрым поиском по названию и содержимому
-- Экспорт в PDF — генерация стилизованного HTML-документа в цветах текущей темы
-- Тёмная и светлая тема
-- Автосохранение при редактировании уже сохранённых файлов
-- Настраиваемый шрифт, размер и межстрочный интервал
-- Кастомные контролы окна (на KDE, GNOME и других DE)
-- RTL-поддержка (арабский, иврит и другие)
-- Работает без интернета, без сервера — один бинарник
-
-### Установка
-
-#### AUR (Arch Linux)
-
-```bash
-yay -S qnote
-# или
-paru -S qnote
-```
-
-#### Скачать бинарник
-
-Скачайте актуальный бинарник со страницы [Releases](https://github.com/Omixxxxxxx/qnote/releases), дайте права на выполнение и запустите:
-
-```bash
-chmod +x qnote
-./qnote
-```
-
-### Сборка из исходников
-
-#### Зависимости
-
-- [Rust](https://rustup.rs/) (stable)
-- [Node.js](https://nodejs.org/) >= 18
-- [pnpm](https://pnpm.io/) (`npm i -g pnpm`)
-- Системные библиотеки GTK3 + WebKitGTK:
-
-```bash
-# Arch Linux
-sudo pacman -S webkit2gtk-4.1 gtk3 base-devel
-
-# Ubuntu/Debian
-sudo apt install libwebkit2gtk-4.1-dev libgtk-3-dev build-essential
-```
-
-#### Сборка
-
-```bash
-git clone https://github.com/Omixxxxxxx/qnote.git
-cd qnote
-pnpm install
-pnpm tauri build
-```
-
-Бинарник появится в `src-tauri/target/release/qnote`.
 
 ---
 
@@ -112,6 +40,10 @@ qnote is a lightweight desktop note editor built with Tauri v2 + React. It suppo
 - Custom window controls (on KDE, GNOME, and other DEs)
 - RTL support (Arabic, Hebrew, etc.)
 - No internet required, no server — single binary
+
+| Dark-1 | Dark-2 | Lite-1 | Lite-2 |
+| :---: | :---: | :---: | :---: |
+| ![D1](https://i.ibb.co/SD9bzS9H/qnote-1dark.jpg) | ![D2](https://i.ibb.co/qF1W4FY9/qnote-2dark.jpg) | ![L1](https://i.ibb.co/pjhnRBVY/qnote-1lite.jpg) | ![L2](https://i.ibb.co/DPJmmrvy/qnote-2lite.jpg) |
 
 ### Installation
 
@@ -159,6 +91,82 @@ pnpm tauri build
 ```
 
 Binary will be at `src-tauri/target/release/qnote`.
+
+---
+
+<a name="russian"></a>
+
+## Русский
+
+<!-- qnote_logo -->
+<img src='https://i.ibb.co/YByQ9xr6/qnote-logo.jpg'>
+qnote — лёгкий десктопный редактор текстовых заметок на базе Tauri v2 + React. Поддерживает Markdown с живым предпросмотром, историю файлов с поиском, экспорт в PDF и кастомное оформление окна.
+
+### Возможности
+
+- Редактирование plain text и Markdown (`.md`) в одном приложении
+- Live-предпросмотр Markdown с поддержкой GFM и HTML
+- Панель форматирования: заголовки, жирный, курсив, код, цитаты, таблицы, ссылки, изображения
+- Сворачиваемый редактор в режиме Preview
+- История файлов с группировкой по дням и быстрым поиском по названию и содержимому
+- Экспорт в PDF — генерация стилизованного HTML-документа в цветах текущей темы
+- Тёмная и светлая тема
+- Автосохранение при редактировании уже сохранённых файлов
+- Настраиваемый шрифт, размер и межстрочный интервал
+- Кастомные контролы окна (на KDE, GNOME и других DE)
+- RTL-поддержка (арабский, иврит и другие)
+- Работает без интернета, без сервера — один бинарник
+
+| Dark-1 | Dark-2 | Lite-1 | Lite-2 |
+| :---: | :---: | :---: | :---: |
+| ![D1](https://i.ibb.co/SD9bzS9H/qnote-1dark.jpg) | ![D2](https://i.ibb.co/qF1W4FY9/qnote-2dark.jpg) | ![L1](https://i.ibb.co/pjhnRBVY/qnote-1lite.jpg) | ![L2](https://i.ibb.co/DPJmmrvy/qnote-2lite.jpg) |
+
+### Установка
+
+#### AUR (Arch Linux)
+
+```bash
+yay -S qnote
+# или
+paru -S qnote
+```
+
+#### Скачать бинарник
+
+Скачайте актуальный бинарник со страницы [Releases](https://github.com/Omixxxxxxx/qnote/releases), дайте права на выполнение и запустите:
+
+```bash
+chmod +x qnote
+./qnote
+```
+
+### Сборка из исходников
+
+#### Зависимости
+
+- [Rust](https://rustup.rs/) (stable)
+- [Node.js](https://nodejs.org/) >= 18
+- [pnpm](https://pnpm.io/) (`npm i -g pnpm`)
+- Системные библиотеки GTK3 + WebKitGTK:
+
+```bash
+# Arch Linux
+sudo pacman -S webkit2gtk-4.1 gtk3 base-devel
+
+# Ubuntu/Debian
+sudo apt install libwebkit2gtk-4.1-dev libgtk-3-dev build-essential
+```
+
+#### Сборка
+
+```bash
+git clone https://github.com/Omixxxxxxx/qnote.git
+cd qnote
+pnpm install
+pnpm tauri build
+```
+
+Бинарник появится в `src-tauri/target/release/qnote`.
 
 ---
 
