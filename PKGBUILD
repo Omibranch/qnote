@@ -1,6 +1,6 @@
 # Maintainer: Omi <pprrottonn@gmail.com>
 pkgname=qnote
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=1
 pkgdesc="Minimal Tauri desktop note editor with Markdown support, PDF export, and file history"
 arch=('x86_64')
