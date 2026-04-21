@@ -35,22 +35,22 @@ export default function App() {
       const ctrl = e.ctrlKey || e.metaKey;
       if (!ctrl) return;
 
-      if (e.key === "n") {
+      if (e.code === "KeyN") {
         e.preventDefault();
         newFile();
-      } else if (e.key === "o") {
+      } else if (e.code === "KeyO") {
         e.preventDefault();
         openFile();
-      } else if (e.key === "s" && e.shiftKey) {
+      } else if (e.code === "KeyS" && e.shiftKey) {
         e.preventDefault();
         saveFileAs();
-      } else if (e.key === "s") {
+      } else if (e.code === "KeyS") {
         e.preventDefault();
         saveFile();
-      } else if (e.key === "b") {
+      } else if (e.code === "KeyB") {
         e.preventDefault();
         setSidebarOpen(!sidebarOpen);
-      } else if (e.key === ",") {
+      } else if (e.code === "Comma") {
         e.preventDefault();
         setSettingsOpen(true);
       }

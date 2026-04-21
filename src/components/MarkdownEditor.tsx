@@ -103,10 +103,10 @@ export function MarkdownEditor({ content, onChange, settings }: Props) {
   const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const ctrl = e.ctrlKey || e.metaKey;
     if (!ctrl) return;
-    if (e.key === "b") { e.preventDefault(); wrap("**", "**", "bold"); }
-    else if (e.key === "i") { e.preventDefault(); wrap("*", "*", "italic"); }
-    else if (e.key === "k") { e.preventDefault(); insertLink(); }
-    else if (e.key === "`") { e.preventDefault(); wrap("`", "`", "code"); }
+    if (e.code === "KeyB") { e.preventDefault(); wrap("**", "**", "bold"); }
+    else if (e.code === "KeyI") { e.preventDefault(); wrap("*", "*", "italic"); }
+    else if (e.code === "KeyK") { e.preventDefault(); insertLink(); }
+    else if (e.code === "Backquote") { e.preventDefault(); wrap("`", "`", "code"); }
   }, [wrap, insertLink]);
 
   const prevent = (e: React.MouseEvent) => e.preventDefault();

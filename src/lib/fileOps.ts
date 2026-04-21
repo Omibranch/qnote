@@ -26,7 +26,8 @@ export async function saveFile() {
 
 export async function saveFileAs() {
   const { content, fileName, markSaved } = useStore.getState();
-  const path = await api.saveFileDialog(content, fileName);
+  const defaultName = fileName.includes(".") ? fileName : fileName + ".txt";
+  const path = await api.saveFileDialog(content, defaultName);
   if (!path) return;
   const name = path.split("/").pop() || fileName;
   markSaved(path, name);
