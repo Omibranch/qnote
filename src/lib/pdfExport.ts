@@ -1,5 +1,6 @@
 import { marked } from "marked";
 import { openPath } from "@tauri-apps/plugin-opener";
+import { save } from "@tauri-apps/plugin-dialog";
 import { api } from "./api";
 import type { Settings } from "../store/useStore";
 
@@ -119,7 +120,13 @@ input[type="checkbox"] { margin-right: 0.4em; }
 <body>${bodyHtml}</body>
 </html>`;
 
-  const tmpPath = `/tmp/qnote_export_${Date.now()}.html`;
-  await api.writeFile(tmpPath, html);
-  await openPath(tmpPath);
+  const baseName = fileName.replace(/\.[^.]+$/, "") || "export";
+  const savePath = await save({
+    defaultPath: `${baseName}.html`,
+    filters: [{ name: "HTML", extensions: ["html"] }],
+  });
+  if (!savePath) return;
+
+  await api.writeFile(savePath, html);
+  await openPath(savePath);
 }
