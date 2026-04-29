@@ -12,7 +12,7 @@ optdepends=('typst: PDF export'
             'tesseract-data-eng: English OCR language data'
             'tesseract-data-rus: Russian OCR language data')
 source=("${pkgname}-${pkgver}::https://github.com/Omibranch/qnote/releases/download/v${pkgver}/qnote-linux-x86_64")
-sha256sums=('SKIP')
+sha256sums=('0c84b4f96dbbbcae129dd81f9af1519f4695e649f54fa7c01c3b2790cb4b50ff')
 
 package() {
     install -Dm755 "${srcdir}/${pkgname}-${pkgver}" "${pkgdir}/usr/bin/${pkgname}"
