@@ -14,6 +14,7 @@ export function Editor() {
   const versionIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const filePathRef = useRef<string | null>(filePath);
   const contentRef = useRef<string>(content);
+  const lastSavedContentRef = useRef<string>(content);
 
   useEffect(() => { contentRef.current = content; }, [content]);
   useEffect(() => { filePathRef.current = filePath; }, [filePath]);
@@ -26,6 +27,7 @@ export function Editor() {
   useEffect(() => {
     textareaRef.current?.focus();
     openedAtRef.current = Date.now();
+    lastSavedContentRef.current = content;
 
     if (filePath) {
       api.saveVersion(filePath, content).catch(() => {});
@@ -59,7 +61,10 @@ export function Editor() {
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     saveTimerRef.current = setTimeout(async () => {
       try {
+        const prevContent = lastSavedContentRef.current;
+        await api.saveVersion(filePath, prevContent).catch(() => {});
         await api.writeFile(filePath, content);
+        lastSavedContentRef.current = content;
         markSaved(filePath, fileName);
       } catch {
         // Auto-save silently fails; user can still manual-save

@@ -17,6 +17,10 @@ export async function openFile() {
 export async function saveFile() {
   const { content, filePath, fileName, markSaved } = useStore.getState();
   if (filePath) {
+    const prevContent = await api.readFile(filePath).catch(() => null);
+    if (prevContent !== null) {
+      await api.saveVersion(filePath, prevContent).catch(() => {});
+    }
     await api.writeFile(filePath, content);
     markSaved(filePath, fileName);
   } else {
