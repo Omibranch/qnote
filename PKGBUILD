@@ -1,14 +1,14 @@
 # Maintainer: Omi <pprrottonn@gmail.com>
 pkgname=qnote
-pkgver=0.1.1
+pkgver=0.2.0
 pkgrel=1
-pkgdesc="Minimal Tauri desktop note editor with Markdown support, PDF export, and file history"
+pkgdesc="Minimal Tauri desktop note editor with Markdown support, PDF export, OCR, version history"
 arch=('x86_64')
-url="https://github.com/Omixxxxxxx/qnote"
+url="https://github.com/Omibranch/qnote"
 license=('MIT')
 depends=('gtk3' 'webkit2gtk-4.1' 'xdg-utils')
 makedepends=('rust' 'cargo' 'nodejs' 'pnpm' 'base-devel')
-source=("$pkgname-$pkgver.tar.gz::https://github.com/Omixxxxxxx/qnote/archive/refs/tags/v$pkgver.tar.gz")
+source=("$pkgname-$pkgver.tar.gz::https://github.com/Omibranch/qnote/archive/refs/tags/v$pkgver.tar.gz")
 sha256sums=('SKIP')
 
 build() {

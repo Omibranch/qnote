@@ -179,6 +179,23 @@ export function Settings() {
                     <span>days</span>
                   </div>
                 </div>
+                <div className="settings-row">
+                  <label>
+                    Auto-version interval
+                    <span className="label-suffix">{draft.version_interval_minutes} min</span>
+                  </label>
+                  <input
+                    type="range"
+                    min={1}
+                    max={60}
+                    step={1}
+                    className="settings-range"
+                    value={draft.version_interval_minutes}
+                    onChange={(e) =>
+                      updateDraft({ version_interval_minutes: Number(e.target.value) })
+                    }
+                  />
+                </div>
               </div>
             </div>
 

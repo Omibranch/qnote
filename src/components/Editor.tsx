@@ -9,13 +9,48 @@ export function Editor() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Track when the current file was opened, and the content/path at that moment.
+  const openedAtRef = useRef<number>(0);
+  const versionIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const filePathRef = useRef<string | null>(filePath);
+  const contentRef = useRef<string>(content);
+
+  useEffect(() => { contentRef.current = content; }, [content]);
+  useEffect(() => { filePathRef.current = filePath; }, [filePath]);
+
   useEffect(() => {
     textareaRef.current?.focus();
   }, []);
 
-  // Refocus when new file is opened
+  // Refocus + save version on file open
   useEffect(() => {
     textareaRef.current?.focus();
+    openedAtRef.current = Date.now();
+
+    if (filePath) {
+      api.saveVersion(filePath, content).catch(() => {});
+    }
+
+    // Start periodic auto-version: after 1h open, every N minutes
+    if (versionIntervalRef.current) clearInterval(versionIntervalRef.current);
+    if (filePath) {
+      const intervalMs = (settings.version_interval_minutes || 10) * 60_000;
+      versionIntervalRef.current = setInterval(() => {
+        const path = filePathRef.current;
+        if (!path) return;
+        const openedFor = Date.now() - openedAtRef.current;
+        if (openedFor >= 60 * 60_000) {
+          api.saveVersion(path, contentRef.current).catch(() => {});
+        }
+      }, intervalMs);
+    }
+
+    return () => {
+      if (versionIntervalRef.current) {
+        clearInterval(versionIntervalRef.current);
+        versionIntervalRef.current = null;
+      }
+    };
   }, [filePath, fileName]);
 
   // Debounced auto-save for files that already have a path

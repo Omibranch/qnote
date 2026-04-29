@@ -6,12 +6,19 @@ export interface HistoryEntry {
   last_opened: number;
 }
 
+export interface VersionEntry {
+  timestamp_ms: number;
+  size: number;
+  preview: string;
+}
+
 export interface Settings {
   retention_days: number;
   font_family: string;
   font_size: number;
   theme: "dark" | "light";
   line_height: number;
+  version_interval_minutes: number;
 }
 
 const defaultSettings: Settings = {
@@ -20,6 +27,7 @@ const defaultSettings: Settings = {
   font_size: 15,
   theme: "dark",
   line_height: 1.7,
+  version_interval_minutes: 10,
 };
 
 interface AppState {
@@ -32,6 +40,7 @@ interface AppState {
   settings: Settings;
   sidebarOpen: boolean;
   settingsOpen: boolean;
+  historyPanelOpen: boolean;
   showWindowControls: boolean;
 
   setContent: (content: string) => void;
@@ -41,6 +50,7 @@ interface AppState {
   setIsMarkdown: (v: boolean) => void;
   setSidebarOpen: (open: boolean) => void;
   setSettingsOpen: (open: boolean) => void;
+  setHistoryPanelOpen: (open: boolean) => void;
   setHistory: (history: HistoryEntry[]) => void;
   updateSettings: (patch: Partial<Settings>) => void;
   setShowWindowControls: (show: boolean) => void;
@@ -56,6 +66,7 @@ export const useStore = create<AppState>((set) => ({
   settings: defaultSettings,
   sidebarOpen: false,
   settingsOpen: false,
+  historyPanelOpen: false,
   showWindowControls: false,
 
   setContent: (content) => set({ content, isDirty: true }),
@@ -68,6 +79,7 @@ export const useStore = create<AppState>((set) => ({
   setIsMarkdown: (v) => set({ isMarkdown: v }),
   setSidebarOpen: (open) => set({ sidebarOpen: open }),
   setSettingsOpen: (open) => set({ settingsOpen: open }),
+  setHistoryPanelOpen: (open) => set({ historyPanelOpen: open }),
   setHistory: (history) => set({ history }),
   updateSettings: (patch) =>
     set((s) => ({ settings: { ...s.settings, ...patch } })),

@@ -981,3 +981,139 @@ body {
   color: var(--text-3);
   font-style: italic;
 }
+
+/* ── Version history panel ───────────────────────────────────────── */
+
+.vh-panel {
+  width: 560px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.vh-filters {
+  display: flex;
+  gap: 4px;
+  padding: 0 20px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.vh-filter-btn {
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-2);
+  font-size: 12px;
+  font-family: var(--font-ui);
+  cursor: pointer;
+  transition: background var(--t), color var(--t), border-color var(--t);
+}
+
+.vh-filter-btn:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text);
+}
+
+.vh-filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.vh-body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 8px 0;
+}
+
+.vh-empty {
+  padding: 24px 20px;
+  color: var(--text-3);
+  font-size: 13px;
+  text-align: center;
+}
+
+.vh-item {
+  border-bottom: 1px solid var(--border);
+}
+
+.vh-item:last-child {
+  border-bottom: none;
+}
+
+.vh-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px 4px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.vh-item-header:hover .vh-ts {
+  color: var(--accent);
+}
+
+.vh-ts {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  transition: color var(--t);
+}
+
+.vh-size {
+  font-size: 11.5px;
+  color: var(--text-3);
+}
+
+.vh-preview {
+  padding: 0 20px 8px;
+  font-size: 12px;
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vh-expanded {
+  padding: 0 20px 12px;
+}
+
+.vh-content {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--text-2);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.vh-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.vh-restore-btn,
+.vh-delete-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  padding: 5px 12px;
+}
+
+.vh-delete-btn {
+  color: var(--text-2);
+}
+
+.vh-delete-btn:hover {
+  color: #e05a5a;
+}

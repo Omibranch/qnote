@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { open, save } from "@tauri-apps/plugin-dialog";
-import type { HistoryEntry, Settings } from "../store/useStore";
+import type { HistoryEntry, Settings, VersionEntry } from "../store/useStore";
 
 export const api = {
   readFile: (path: string): Promise<string> =>
@@ -25,6 +25,53 @@ export const api = {
     invoke("search_files", { query }),
 
   getDesktopEnv: (): Promise<string> => invoke("get_desktop_env"),
+
+  getPlatform: (): Promise<string> => invoke("get_platform"),
+
+  exportPdf: (
+    savePath: string,
+    content: string,
+    isMarkdown: boolean,
+    title: string,
+    settings: Settings
+  ): Promise<void> =>
+    invoke("export_pdf", {
+      save_path: savePath,
+      content,
+      is_markdown: isMarkdown,
+      title,
+      settings,
+    }),
+
+  ocrImage: (path: string): Promise<string> =>
+    invoke("ocr_image", { path }),
+
+  saveVersion: (filePath: string, content: string): Promise<VersionEntry | null> =>
+    invoke("save_version", { file_path: filePath, content }),
+
+  listVersions: (filePath: string): Promise<VersionEntry[]> =>
+    invoke("list_versions", { file_path: filePath }),
+
+  readVersion: (filePath: string, timestampMs: number): Promise<string> =>
+    invoke("read_version", { file_path: filePath, timestamp_ms: timestampMs }),
+
+  deleteVersion: (filePath: string, timestampMs: number): Promise<void> =>
+    invoke("delete_version", { file_path: filePath, timestamp_ms: timestampMs }),
+
+  async openImageDialog(): Promise<string | null> {
+    const selected = await open({
+      multiple: false,
+      filters: [
+        {
+          name: "Images",
+          extensions: ["png", "jpg", "jpeg", "bmp", "tiff", "tif", "webp", "gif"],
+        },
+        { name: "All files", extensions: ["*"] },
+      ],
+    });
+    if (!selected || typeof selected !== "string") return null;
+    return selected;
+  },
 
   async openFileDialog(): Promise<{
     path: string;

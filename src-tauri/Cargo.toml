@@ -1,6 +1,6 @@
 [package]
 name = "qnote"
-version = "0.1.1"
+version = "0.2.0"
 description = "A minimal, beautiful notepad for Arch Linux"
 authors = ["Omi"]
 edition = "2021"
@@ -20,3 +20,5 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 dirs = "5"
 chrono = { version = "0.4", features = ["serde"] }
+pulldown-cmark = { version = "0.12", default-features = false }
+sha1 = "0.10"

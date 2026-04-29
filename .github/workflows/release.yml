@@ -19,7 +19,8 @@ jobs:
             libgtk-3-dev \
             libayatana-appindicator3-dev \
             librsvg2-dev \
-            patchelf
+            patchelf \
+            squashfs-tools
 
       - uses: pnpm/action-setup@v4
         with:
@@ -36,16 +37,28 @@ jobs:
         with:
           workspaces: src-tauri
 
-      - name: Build
+      - name: Build (AppImage + deb + binary)
         run: |
           pnpm install --frozen-lockfile
-          pnpm tauri build --bundles none
+          pnpm tauri build --bundles appimage,deb
 
       - name: Upload Linux binary
         uses: actions/upload-artifact@v4
         with:
           name: qnote-linux-x86_64
           path: src-tauri/target/release/qnote
+
+      - name: Upload AppImage
+        uses: actions/upload-artifact@v4
+        with:
+          name: qnote-linux-appimage
+          path: src-tauri/target/release/bundle/appimage/*.AppImage
+
+      - name: Upload deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: qnote-linux-deb
+          path: src-tauri/target/release/bundle/deb/*.deb
 
   build-windows:
     runs-on: windows-latest
@@ -67,7 +80,7 @@ jobs:
         with:
           workspaces: src-tauri
 
-      - name: Build
+      - name: Build (NSIS installer + portable)
         run: |
           pnpm install --frozen-lockfile
           pnpm tauri build --bundles nsis
@@ -77,6 +90,12 @@ jobs:
         with:
           name: qnote-windows-setup
           path: src-tauri/target/release/bundle/nsis/*.exe
+
+      - name: Upload Windows portable
+        uses: actions/upload-artifact@v4
+        with:
+          name: qnote-windows-portable
+          path: src-tauri/target/release/qnote.exe
 
   release:
     needs: [build-linux, build-windows]
@@ -93,18 +112,38 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
+          name: qnote-linux-appimage
+          path: artifacts/appimage
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: qnote-linux-deb
+          path: artifacts/deb
+
+      - uses: actions/download-artifact@v4
+        with:
           name: qnote-windows-setup
-          path: artifacts/windows
+          path: artifacts/windows-setup
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: qnote-windows-portable
+          path: artifacts/windows-portable
 
       - name: Rename Linux binary
         run: |
           chmod +x artifacts/linux/qnote
           mv artifacts/linux/qnote artifacts/linux/qnote-linux-x86_64
+          chmod +x artifacts/windows-portable/qnote.exe
+          mv artifacts/windows-portable/qnote.exe artifacts/windows-portable/qnote-windows-portable.exe
 
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
           files: |
             artifacts/linux/qnote-linux-x86_64
-            artifacts/windows/*.exe
+            artifacts/appimage/*.AppImage
+            artifacts/deb/*.deb
+            artifacts/windows-setup/*.exe
+            artifacts/windows-portable/qnote-windows-portable.exe
           generate_release_notes: true

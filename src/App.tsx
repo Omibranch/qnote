@@ -3,6 +3,7 @@ import { Header } from "./components/Header";
 import { Sidebar } from "./components/Sidebar";
 import { Editor } from "./components/Editor";
 import { Settings } from "./components/Settings";
+import { VersionHistory } from "./components/VersionHistory";
 import { useStore } from "./store/useStore";
 import { api } from "./lib/api";
 import { openFile, saveFile, saveFileAs } from "./lib/fileOps";
@@ -22,11 +23,11 @@ export default function App() {
   } = useStore();
 
   useEffect(() => {
-    Promise.all([api.getSettings(), api.getHistory(), api.getDesktopEnv()]).then(([s, h, env]) => {
+    Promise.all([api.getSettings(), api.getHistory(), api.getDesktopEnv(), api.getPlatform()]).then(([s, h, env, platform]) => {
       updateSettings(s);
       setHistory(h);
       const isDE = KNOWN_DES.some((de) => (env as string).toUpperCase().includes(de.toUpperCase()));
-      setShowWindowControls(isDE);
+      setShowWindowControls(isDE || platform === "windows");
     });
   }, []);
 
@@ -68,6 +69,7 @@ export default function App() {
         <Editor />
       </div>
       <Settings />
+      <VersionHistory />
     </div>
   );
 }

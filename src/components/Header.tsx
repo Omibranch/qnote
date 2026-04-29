@@ -1,9 +1,9 @@
-import { Menu, FilePlus, FolderOpen, Save, SaveAll, FileOutput, Settings, Sun, Moon, Minus, Square, X } from "lucide-react";
+import { Menu, FilePlus, FolderOpen, Save, SaveAll, FileOutput, FileCode, ScanText, History, Settings, Sun, Moon, Minus, Square, X } from "lucide-react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useStore } from "../store/useStore";
 import { openFile, saveFile, saveFileAs } from "../lib/fileOps";
-import { exportPdf } from "../lib/pdfExport";
-
+import { exportPdf, exportHtml } from "../lib/pdfExport";
+import { api } from "../lib/api";
 
 const win = getCurrentWindow();
 
@@ -12,6 +12,7 @@ export function Header() {
     fileName, isDirty, sidebarOpen, setSidebarOpen,
     setSettingsOpen, settings, updateSettings, newFile,
     showWindowControls, isMarkdown, setIsMarkdown, content,
+    setContent, setHistoryPanelOpen, filePath,
   } = useStore();
 
   const toggleTheme = () =>
@@ -22,6 +23,19 @@ export function Header() {
     const target = e.target as HTMLElement;
     if (!target.closest("button")) {
       win.startDragging();
+    }
+  };
+
+  const handleOcr = async () => {
+    const imagePath = await api.openImageDialog();
+    if (!imagePath) return;
+    try {
+      const text = await api.ocrImage(imagePath);
+      if (text) {
+        setContent(content ? content + "\n\n" + text : text);
+      }
+    } catch (err) {
+      alert(String(err));
     }
   };
 
@@ -47,14 +61,41 @@ export function Header() {
         <button className="icon-btn" title="Save as (Ctrl+Shift+S)" onClick={saveFileAs}>
           <SaveAll size={17} />
         </button>
+
+        <div className="win-controls-divider" />
+
         <button
           className="icon-btn"
-          title="Export to PDF"
+          title="Export to PDF (requires typst)"
           onClick={() => exportPdf(content, isMarkdown, settings, fileName)}
         >
           <FileOutput size={17} />
         </button>
+        <button
+          className="icon-btn"
+          title="Export to HTML"
+          onClick={() => exportHtml(content, isMarkdown, settings, fileName)}
+        >
+          <FileCode size={17} />
+        </button>
+        <button
+          className="icon-btn"
+          title="OCR: extract text from image (requires tesseract)"
+          onClick={handleOcr}
+        >
+          <ScanText size={17} />
+        </button>
+        <button
+          className="icon-btn"
+          title="Version history"
+          disabled={!filePath}
+          onClick={() => setHistoryPanelOpen(true)}
+        >
+          <History size={17} />
+        </button>
+
         <div className="win-controls-divider" />
+
         <button
           className={`icon-btn md-mode-btn${isMarkdown ? " md-mode-active" : ""}`}
           title={isMarkdown ? "Switch to plain text" : "Switch to Markdown"}
