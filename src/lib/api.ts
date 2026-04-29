@@ -36,9 +36,9 @@ export const api = {
     settings: Settings
   ): Promise<void> =>
     invoke("export_pdf", {
-      save_path: savePath,
+      savePath,
       content,
-      is_markdown: isMarkdown,
+      isMarkdown,
       title,
       settings,
     }),
@@ -47,16 +47,16 @@ export const api = {
     invoke("ocr_image", { path }),
 
   saveVersion: (filePath: string, content: string): Promise<VersionEntry | null> =>
-    invoke("save_version", { file_path: filePath, content }),
+    invoke("save_version", { filePath, content }),
 
   listVersions: (filePath: string): Promise<VersionEntry[]> =>
-    invoke("list_versions", { file_path: filePath }),
+    invoke("list_versions", { filePath }),
 
   readVersion: (filePath: string, timestampMs: number): Promise<string> =>
-    invoke("read_version", { file_path: filePath, timestamp_ms: timestampMs }),
+    invoke("read_version", { filePath, timestampMs }),
 
   deleteVersion: (filePath: string, timestampMs: number): Promise<void> =>
-    invoke("delete_version", { file_path: filePath, timestamp_ms: timestampMs }),
+    invoke("delete_version", { filePath, timestampMs }),
 
   async openImageDialog(): Promise<string | null> {
     const selected = await open({

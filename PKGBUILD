@@ -1,16 +1,14 @@
 # Maintainer: Omi <pprrottonn@gmail.com>
 pkgname=qnote
-pkgver=0.2.2
+pkgver=0.2.3
 pkgrel=1
 pkgdesc="Minimal Tauri desktop note editor with Markdown support, PDF export, OCR, version history"
 arch=('x86_64')
 url="https://github.com/Omibranch/qnote"
 license=('MIT')
-depends=('gtk3' 'webkit2gtk-4.1' 'xdg-utils')
-optdepends=('typst: PDF export'
-            'tesseract: OCR text extraction from images'
-            'tesseract-data-eng: English OCR language data'
-            'tesseract-data-rus: Russian OCR language data')
+depends=('gtk3' 'webkit2gtk-4.1' 'xdg-utils'
+         'tesseract' 'tesseract-data-eng' 'tesseract-data-rus')
+optdepends=('typst: PDF export')
 source=("${pkgname}-${pkgver}::https://github.com/Omibranch/qnote/releases/download/v${pkgver}/qnote-linux-x86_64")
 sha256sums=('SKIP')
 
