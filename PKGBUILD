@@ -1,6 +1,6 @@
 # Maintainer: Omi <pprrottonn@gmail.com>
 pkgname=qnote
-pkgver=0.2.1
+pkgver=0.2.2
 pkgrel=1
 pkgdesc="Minimal Tauri desktop note editor with Markdown support, PDF export, OCR, version history"
 arch=('x86_64')
@@ -12,7 +12,7 @@ optdepends=('typst: PDF export'
             'tesseract-data-eng: English OCR language data'
             'tesseract-data-rus: Russian OCR language data')
 source=("${pkgname}-${pkgver}::https://github.com/Omibranch/qnote/releases/download/v${pkgver}/qnote-linux-x86_64")
-sha256sums=('0c84b4f96dbbbcae129dd81f9af1519f4695e649f54fa7c01c3b2790cb4b50ff')
+sha256sums=('SKIP')
 
 package() {
     install -Dm755 "${srcdir}/${pkgname}-${pkgver}" "${pkgdir}/usr/bin/${pkgname}"

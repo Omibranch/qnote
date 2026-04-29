@@ -238,6 +238,7 @@ fn md_to_typst(md: &str) -> String {
     let mut in_code_block = false;
     let mut code_lang = String::new();
     let mut code_buf = String::new();
+    let mut in_image = false;
 
     let mut in_table = false;
     let mut table_cols = 0usize;
@@ -293,16 +294,22 @@ fn md_to_typst(md: &str) -> String {
             Event::End(TagEnd::Link) => {
                 if in_cell { cell_buf.push(']'); } else { out.push(']'); }
             }
-            Event::Start(Tag::Image { dest_url, title, .. }) => {
-                let alt = if title.is_empty() { "image" } else { title.as_ref() };
-                let piece = format!(
-                    "#link(\"{}\")[{}]",
-                    escape_typst_string(&dest_url),
-                    escape_typst_content(alt)
-                );
+            Event::Start(Tag::Image { dest_url, .. }) => {
+                in_image = true;
+                let url = dest_url.as_ref();
+                let expanded = if url.starts_with("~/") {
+                    dirs::home_dir()
+                        .map(|h| h.join(&url[2..]).to_string_lossy().into_owned())
+                        .unwrap_or_else(|| url.to_string())
+                } else {
+                    url.to_string()
+                };
+                let piece = format!("\n#image(\"{}\")\n", escape_typst_string(&expanded));
                 if in_cell { cell_buf.push_str(&piece); } else { out.push_str(&piece); }
             }
-            Event::End(TagEnd::Image) => {}
+            Event::End(TagEnd::Image) => {
+                in_image = false;
+            }
             Event::Start(Tag::List(n)) => {
                 list_stack.push(n.is_some());
             }
@@ -392,6 +399,8 @@ fn md_to_typst(md: &str) -> String {
             Event::Text(text) => {
                 if in_code_block {
                     code_buf.push_str(&text);
+                } else if in_image {
+                    // alt text — skip, image is already rendered via #image()
                 } else if in_cell {
                     cell_buf.push_str(&escape_typst_content(&text));
                 } else {
