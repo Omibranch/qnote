@@ -591,26 +591,28 @@ fn export_pdf(
 
 // ---------- OCR ----------
 
-fn run_ocr(image_path: &str) -> Result<String, String> {
-    let output = Command::new("tesseract")
+fn tesseract_run(image_path: &str, lang: &str) -> std::io::Result<std::process::Output> {
+    Command::new("tesseract")
         .arg(image_path)
         .arg("-")
-        .arg("-l")
-        .arg("eng+rus")
-        .output();
+        .arg("-l").arg(lang)
+        .arg("--oem").arg("1")   // LSTM only — better accuracy
+        .arg("--psm").arg("6")   // uniform block of text
+        .output()
+}
+
+fn run_ocr(image_path: &str) -> Result<String, String> {
+    let output = tesseract_run(image_path, "rus+eng");
 
     match output {
         Ok(out) if out.status.success() => {
             Ok(String::from_utf8_lossy(&out.stdout).trim_end().to_string())
         }
         Ok(out) => {
-            // Retry with only english if language data missing
             let stderr = String::from_utf8_lossy(&out.stderr).to_string();
+            // If rus lang data missing, retry with eng only
             if stderr.contains("Failed loading language") || stderr.contains("TESSDATA") {
-                let out2 = Command::new("tesseract")
-                    .arg(image_path)
-                    .arg("-")
-                    .output()
+                let out2 = tesseract_run(image_path, "eng")
                     .map_err(|e| format!("tesseract error: {e}"))?;
                 if out2.status.success() {
                     return Ok(String::from_utf8_lossy(&out2.stdout).trim_end().to_string());
