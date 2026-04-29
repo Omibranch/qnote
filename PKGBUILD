@@ -9,7 +9,7 @@ license=('MIT')
 depends=('gtk3' 'webkit2gtk-4.1' 'xdg-utils')
 makedepends=('rust' 'cargo' 'nodejs' 'pnpm' 'base-devel')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/Omibranch/qnote/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('SKIP')
+sha256sums=('34c2bb390575aa67f17099558eaf776eb4a83839f83a9b8612b84cf0788140fc')
 
 build() {
     cd "$pkgname-$pkgver"
