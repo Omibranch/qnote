@@ -27,7 +27,7 @@ export default function App() {
       updateSettings(s);
       setHistory(h);
       const isDE = KNOWN_DES.some((de) => (env as string).toUpperCase().includes(de.toUpperCase()));
-      setShowWindowControls(isDE || platform === "windows");
+      setShowWindowControls(isDE || platform === "windows" || platform === "macos");
     });
   }, []);
 
