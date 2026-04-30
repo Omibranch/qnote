@@ -13,6 +13,7 @@ pub struct HistoryEntry {
 }
 
 fn default_version_interval() -> u32 { 10 }
+fn default_debug_mode() -> bool { false }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Settings {
@@ -23,6 +24,8 @@ pub struct Settings {
     pub line_height: f32,
     #[serde(default = "default_version_interval")]
     pub version_interval_minutes: u32,
+    #[serde(default = "default_debug_mode")]
+    pub debug_mode: bool,
 }
 
 impl Default for Settings {
@@ -34,6 +37,7 @@ impl Default for Settings {
             theme: "dark".to_string(),
             line_height: 1.7,
             version_interval_minutes: 10,
+            debug_mode: false,
         }
     }
 }
