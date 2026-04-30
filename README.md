@@ -108,10 +108,20 @@ Download from the [Releases](https://github.com/Omibranch/qnote/releases) page:
 
 ### Building from source
 
-#### Dependencies
+#### Dependencies (Linux / Windows)
 
-- [asdf](https://asdf-vm.com/) (version manager)
-- That's it — asdf will manage Rust, Node.js, and pnpm
+- [Rust](https://rustup.rs/) (stable)
+- [Node.js](https://nodejs.org/) >= 18
+- [pnpm](https://pnpm.io/) (`npm i -g pnpm`)
+- GTK3 + WebKitGTK system libraries (Linux only):
+
+```bash
+# Arch Linux
+sudo pacman -S webkit2gtk-4.1 gtk3 base-devel
+
+# Ubuntu/Debian
+sudo apt install libwebkit2gtk-4.1-dev libgtk-3-dev build-essential
+```
 
 #### Build (Linux / Windows)
 
@@ -123,6 +133,10 @@ pnpm tauri build
 ```
 
 Binary will be at `src-tauri/target/release/qnote`.
+
+#### Dependencies (macOS)
+
+- [asdf](https://asdf-vm.com/) (version manager) — manages Rust, Node.js, and pnpm
 
 #### Build (macOS)
 
@@ -229,10 +243,20 @@ WebView2 встроен в Windows 11 и устанавливается авто
 
 ### Сборка из исходников
 
-#### Зависимости
+#### Зависимости (Linux / Windows)
 
-- [asdf](https://asdf-vm.com/) (version manager)
-- Всё остальное (Rust, Node.js, pnpm) установится через asdf
+- [Rust](https://rustup.rs/) (stable)
+- [Node.js](https://nodejs.org/) >= 18
+- [pnpm](https://pnpm.io/) (`npm i -g pnpm`)
+- Системные библиотеки GTK3 + WebKitGTK (только Linux):
+
+```bash
+# Arch Linux
+sudo pacman -S webkit2gtk-4.1 gtk3 base-devel
+
+# Ubuntu/Debian
+sudo apt install libwebkit2gtk-4.1-dev libgtk-3-dev build-essential
+```
 
 #### Сборка (Linux / Windows)
 
@@ -244,6 +268,10 @@ pnpm tauri build
 ```
 
 Бинарник появится в `src-tauri/target/release/qnote`.
+
+#### Зависимости (macOS)
+
+- [asdf](https://asdf-vm.com/) (version manager) — управляет Rust, Node.js и pnpm
 
 #### Сборка (macOS)
 
