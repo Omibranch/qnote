@@ -19,6 +19,7 @@ export interface Settings {
   theme: "dark" | "light";
   line_height: number;
   version_interval_minutes: number;
+  debug_mode: boolean;
 }
 
 const defaultSettings: Settings = {
@@ -28,6 +29,7 @@ const defaultSettings: Settings = {
   theme: "dark",
   line_height: 1.7,
   version_interval_minutes: 10,
+  debug_mode: false,
 };
 
 interface AppState {

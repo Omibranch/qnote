@@ -4,6 +4,7 @@ import { Sidebar } from "./components/Sidebar";
 import { Editor } from "./components/Editor";
 import { Settings } from "./components/Settings";
 import { VersionHistory } from "./components/VersionHistory";
+import { DebugConsole } from "./components/DebugConsole";
 import { useStore } from "./store/useStore";
 import { api } from "./lib/api";
 import { openFile, saveFile, saveFileAs } from "./lib/fileOps";
@@ -64,6 +65,7 @@ export default function App() {
   return (
     <div className={`app ${settings.theme}`}>
       <Header />
+      {settings.debug_mode && <DebugConsole />}
       <div className="app-body">
         <Sidebar />
         <Editor />

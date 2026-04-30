@@ -199,6 +199,24 @@ export function Settings() {
               </div>
             </div>
 
+              <div className="settings-section">
+                <h3 className="settings-section-title">Developer</h3>
+                <div className="settings-row">
+                  <label>Debug console</label>
+                  <div className="theme-toggle">
+                    {([false, true] as const).map((v) => (
+                      <button
+                        key={String(v)}
+                        className={`theme-btn${draft.debug_mode === v ? " active" : ""}`}
+                        onClick={() => updateDraft({ debug_mode: v })}
+                      >
+                        {v ? "On" : "Off"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
             <div className="settings-footer">
               <button className="btn-ghost" onClick={handleCancel}>
                 Cancel
