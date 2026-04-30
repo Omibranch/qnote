@@ -1,5 +1,6 @@
 import { Menu, FilePlus, FolderOpen, Save, SaveAll, FileOutput, FileCode, ScanText, History, Settings, Sun, Moon, Minus, Square, X } from "lucide-react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { invoke } from "@tauri-apps/api/core";
 import { useStore } from "../store/useStore";
 import { openFile, saveFile, saveFileAs } from "../lib/fileOps";
 import { exportPdf, exportHtml } from "../lib/pdfExport";
@@ -14,6 +15,10 @@ export function Header() {
     showWindowControls, isMarkdown, setIsMarkdown, content,
     setContent, setHistoryPanelOpen, filePath,
   } = useStore();
+
+  const handleClose = () => {
+    invoke("exit_app");
+  };
 
   const toggleTheme = () =>
     updateSettings({ theme: settings.theme === "dark" ? "light" : "dark" });
@@ -131,7 +136,7 @@ export function Header() {
             <button className="icon-btn" title="Maximize" onClick={() => win.toggleMaximize()}>
               <Square size={15} />
             </button>
-            <button className="icon-btn icon-btn-close" title="Close" onClick={() => win.close()}>
+            <button className="icon-btn icon-btn-close" title="Close" onClick={handleClose}>
               <X size={17} />
             </button>
           </>

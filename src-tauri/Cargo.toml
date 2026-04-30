@@ -1,7 +1,7 @@
 [package]
 name = "qnote"
 version = "0.2.5"
-description = "A minimal, beautiful notepad for Arch Linux"
+description = "A minimal, beautiful notepad"
 authors = ["Omi"]
 edition = "2021"
 
