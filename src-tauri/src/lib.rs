@@ -178,6 +178,10 @@ fn search_files(query: String) -> Result<Vec<HistoryEntry>, String> {
 
 #[tauri::command]
 fn get_system_fonts() -> Vec<String> {
+    if cfg!(target_os = "macos") {
+        return get_system_fonts_macos();
+    }
+
     let output = Command::new("fc-list")
         .arg("--format=%{family}\n")
         .output();
@@ -195,14 +199,48 @@ fn get_system_fonts() -> Vec<String> {
             fonts.dedup();
             fonts
         }
-        Err(_) => vec![
-            "JetBrains Mono".to_string(),
-            "Fira Code".to_string(),
-            "Inter".to_string(),
-            "Roboto Mono".to_string(),
-            "Ubuntu Mono".to_string(),
-        ],
+        Err(_) => fallback_fonts(),
     }
+}
+
+fn get_system_fonts_macos() -> Vec<String> {
+    let output = Command::new("system_profiler")
+        .arg("SPFontsDataType")
+        .output();
+
+    match output {
+        Ok(out) => {
+            let text = String::from_utf8_lossy(&out.stdout);
+            let mut fonts = Vec::new();
+            for line in text.lines() {
+                let trimmed = line.trim();
+                if let Some(family) = trimmed.strip_prefix("Family: ") {
+                    let name = family.trim().to_string();
+                    if !name.is_empty() {
+                        fonts.push(name);
+                    }
+                }
+            }
+            fonts.sort();
+            fonts.dedup();
+            if fonts.is_empty() {
+                fallback_fonts()
+            } else {
+                fonts
+            }
+        }
+        Err(_) => fallback_fonts(),
+    }
+}
+
+fn fallback_fonts() -> Vec<String> {
+    vec![
+        "JetBrains Mono".to_string(),
+        "Fira Code".to_string(),
+        "Inter".to_string(),
+        "Roboto Mono".to_string(),
+        "Ubuntu Mono".to_string(),
+    ]
 }
 
 // ---------- PDF export (via typst CLI) ----------
@@ -758,6 +796,11 @@ fn delete_version(file_path: String, timestamp_ms: i64) -> Result<(), String> {
     Ok(())
 }
 
+#[tauri::command]
+fn exit_app(app: tauri::AppHandle) {
+    app.exit(0);
+}
+
 // Handle `qnote ocr <path>` before Tauri starts.
 pub fn handle_cli() -> bool {
     let args: Vec<String> = std::env::args().collect();
@@ -825,6 +868,7 @@ pub fn run() {
             list_versions,
             read_version,
             delete_version,
+            exit_app,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
