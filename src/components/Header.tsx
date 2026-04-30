@@ -16,20 +16,10 @@ export function Header() {
     setContent, setHistoryPanelOpen, filePath,
   } = useStore();
 
-  const handleClose = () => {
-    invoke("exit_app");
-  };
+  const handleClose = () => invoke("exit_app");
 
   const toggleTheme = () =>
     updateSettings({ theme: settings.theme === "dark" ? "light" : "dark" });
-
-  const handleMouseDown = (e: React.MouseEvent<HTMLElement>) => {
-    if (e.button !== 0) return;
-    const target = e.target as HTMLElement;
-    if (!target.closest("button")) {
-      win.startDragging();
-    }
-  };
 
   const handleOcr = async () => {
     const imagePath = await api.openImageDialog();
@@ -45,7 +35,8 @@ export function Header() {
   };
 
   return (
-    <header className="header" onMouseDown={handleMouseDown}>
+    // data-tauri-drag-region: Tauri handles dragging natively; button clicks pass through correctly
+    <header className="header" data-tauri-drag-region>
       <div className="header-left">
         <button
           className="icon-btn"

@@ -97,8 +97,41 @@ jobs:
           name: qnote-windows-portable
           path: src-tauri/target/release/qnote.exe
 
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Build (dmg universal)
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm tauri build --bundles dmg --target universal-apple-darwin
+
+      - name: Upload macOS dmg
+        uses: actions/upload-artifact@v4
+        with:
+          name: qnote-macos-dmg
+          path: src-tauri/target/universal-apple-darwin/release/bundle/dmg/*.dmg
+
   release:
-    needs: [build-linux, build-windows]
+    needs: [build-linux, build-windows, build-macos]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -130,7 +163,12 @@ jobs:
           name: qnote-windows-portable
           path: artifacts/windows-portable
 
-      - name: Rename Linux binary
+      - uses: actions/download-artifact@v4
+        with:
+          name: qnote-macos-dmg
+          path: artifacts/macos
+
+      - name: Rename binaries
         run: |
           chmod +x artifacts/linux/qnote
           mv artifacts/linux/qnote artifacts/linux/qnote-linux-x86_64
@@ -146,4 +184,5 @@ jobs:
             artifacts/deb/*.deb
             artifacts/windows-setup/*.exe
             artifacts/windows-portable/qnote-windows-portable.exe
+            artifacts/macos/*.dmg
           generate_release_notes: true
