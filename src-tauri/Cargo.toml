@@ -1,6 +1,6 @@
 [package]
 name = "qnote"
-version = "0.2.10"
+version = "0.2.11"
 description = "A minimal, beautiful notepad"
 authors = ["Omi"]
 edition = "2021"

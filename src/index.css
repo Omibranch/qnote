@@ -1407,3 +1407,27 @@ body {
 .update-toast-close:hover {
   opacity: 1;
 }
+
+/* Grid hint toast (one-time, first launch) */
+.grid-hint-toast {
+  position: fixed;
+  bottom: 88px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 8px 10px 14px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  max-width: 280px;
+}
+
+.grid-hint-text {
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.5;
+  flex: 1;
+}

@@ -14,7 +14,7 @@ pub struct HistoryEntry {
 
 fn default_version_interval() -> u32 { 10 }
 fn default_debug_mode() -> bool { false }
-fn default_show_grid() -> bool { false }
+fn default_show_grid() -> bool { true }
 fn default_accent_dark() -> String { "#8a9a8c".to_string() }
 fn default_accent_light() -> String { "#3c4d3e".to_string() }
 fn default_bg_dark() -> String { "#111213".to_string() }
@@ -57,7 +57,7 @@ impl Default for Settings {
             accent_light: "#3c4d3e".to_string(),
             bg_dark: "#111213".to_string(),
             bg_light: "#f5f5f0".to_string(),
-            show_grid: false,
+            show_grid: true,
         }
     }
 }

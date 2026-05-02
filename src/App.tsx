@@ -6,6 +6,7 @@ import { Settings } from "./components/Settings";
 import { VersionHistory } from "./components/VersionHistory";
 import { DebugConsole } from "./components/DebugConsole";
 import { UpdateToast } from "./components/UpdateToast";
+import { GridHintToast } from "./components/GridHintToast";
 import { useStore } from "./store/useStore";
 import { api } from "./lib/api";
 import { openFile, saveFile, saveFileAs } from "./lib/fileOps";
@@ -95,6 +96,7 @@ export default function App() {
       <Settings />
       <VersionHistory />
       <UpdateToast />
+      <GridHintToast />
     </div>
   );
 }

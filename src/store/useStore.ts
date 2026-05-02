@@ -39,7 +39,7 @@ const defaultSettings: Settings = {
   accent_light: "#3c4d3e",
   bg_dark: "#111213",
   bg_light: "#f5f5f0",
-  show_grid: false,
+  show_grid: true,
 };
 
 interface AppState {
