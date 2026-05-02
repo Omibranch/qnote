@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import { getVersion } from "@tauri-apps/api/app";
 import { useStore, type Settings as SettingsType } from "../store/useStore";
 import { api } from "../lib/api";
 
@@ -25,15 +26,21 @@ export function Settings() {
     useStore();
   const [systemFonts, setSystemFonts] = useState<string[]>([]);
   const [draft, setDraft] = useState<SettingsType>(settings);
+  const [installedVersion, setInstalledVersion] = useState("");
+  const [latestVersion, setLatestVersion] = useState<string | null>(null);
+  const [checkingLatest, setCheckingLatest] = useState(false);
 
-  // Sync draft when settings change externally or panel opens
   useEffect(() => {
-    if (settingsOpen) {
-      setDraft(settings);
-      api.getSystemFonts().then((fonts) => {
-        setSystemFonts(fonts);
-      });
-    }
+    if (!settingsOpen) return;
+    setDraft(settings);
+    api.getSystemFonts().then(setSystemFonts);
+    getVersion().then(setInstalledVersion);
+    setCheckingLatest(true);
+    fetch("https://api.github.com/repos/Omibranch/qnote/releases/latest")
+      .then((r) => r.json())
+      .then((d) => setLatestVersion((d.tag_name as string).replace(/^v/, "")))
+      .catch(() => setLatestVersion(null))
+      .finally(() => setCheckingLatest(false));
   }, [settingsOpen]);
 
   const updateDraft = (patch: Partial<SettingsType>) =>
@@ -270,6 +277,29 @@ export function Settings() {
                       </button>
                     ))}
                   </div>
+                </div>
+              </div>
+
+              <div className="settings-section">
+                <h3 className="settings-section-title">About</h3>
+                <div className="settings-row">
+                  <label>Installed</label>
+                  <span className="version-tag">{installedVersion || "..."}</span>
+                </div>
+                <div className="settings-row">
+                  <label>Latest</label>
+                  {checkingLatest ? (
+                    <span className="version-tag version-tag-muted">checking...</span>
+                  ) : latestVersion ? (
+                    <span className={`version-tag${latestVersion !== installedVersion ? " version-tag-update" : ""}`}>
+                      {latestVersion}
+                      {latestVersion !== installedVersion && (
+                        <span className="version-update-dot" />
+                      )}
+                    </span>
+                  ) : (
+                    <span className="version-tag version-tag-muted">—</span>
+                  )}
                 </div>
               </div>
 

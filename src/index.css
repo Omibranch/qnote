@@ -561,6 +561,36 @@ body {
   color: var(--accent-fg);
 }
 
+.version-tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 3px 9px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated2);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.version-tag-muted {
+  color: var(--text-3);
+}
+
+.version-tag-update {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.version-update-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
 .settings-footer {
   display: flex;
   align-items: center;
