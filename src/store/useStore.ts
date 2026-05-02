@@ -20,6 +20,11 @@ export interface Settings {
   line_height: number;
   version_interval_minutes: number;
   debug_mode: boolean;
+  accent_dark: string;
+  accent_light: string;
+  bg_dark: string;
+  bg_light: string;
+  show_grid: boolean;
 }
 
 const defaultSettings: Settings = {
@@ -30,6 +35,11 @@ const defaultSettings: Settings = {
   line_height: 1.7,
   version_interval_minutes: 10,
   debug_mode: false,
+  accent_dark: "#8a9a8c",
+  accent_light: "#3c4d3e",
+  bg_dark: "#111213",
+  bg_light: "#f5f5f0",
+  show_grid: false,
 };
 
 interface AppState {

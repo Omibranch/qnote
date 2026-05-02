@@ -48,6 +48,8 @@ export function DebugConsole() {
     console.warn = (...a) => { orig.warn(...a); push("warn", a); };
     console.error = (...a) => { orig.error(...a); push("error", a); };
 
+    push("info", ["debug console ready"]);
+
     return () => {
       console.log = orig.log;
       console.info = orig.info;

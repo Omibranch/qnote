@@ -41,6 +41,9 @@ qnote is a lightweight desktop note editor built with Tauri v2 + React. It suppo
 - Auto-save for already-saved files
 - New files default to `.txt` extension
 - Configurable font, size, and line height
+- **Custom colors** — pick your own accent and background colors for dark and light themes
+- **Synchronized scroll** — source and preview panes scroll together in Markdown split view
+- Optional background grid (toggle in settings)
 - Custom window controls (on KDE, GNOME, and other DEs; always shown on Windows and macOS)
 - RTL support (Arabic, Hebrew, etc.)
 - No internet required, no server
@@ -176,6 +179,9 @@ qnote — лёгкий десктопный редактор текстовых 
 - Автосохранение при редактировании уже сохранённых файлов
 - Новые файлы сохраняются с расширением `.txt` по умолчанию
 - Настраиваемый шрифт, размер и межстрочный интервал
+- **Кастомные цвета** — свой акцент и фон для тёмной и светлой тем
+- **Синхронизация скролла** — источник и предпросмотр прокручиваются вместе в режиме Markdown split view
+- Опциональная сетка на фоне (переключается в настройках)
 - Кастомные контролы окна (на KDE, GNOME и других DE; всегда показываются на Windows и macOS)
 - RTL-поддержка (арабский, иврит и другие)
 - Без интернета, без сервера

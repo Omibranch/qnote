@@ -23,6 +23,8 @@ export function MarkdownEditor({ content, onChange, settings }: Props) {
   const [tab, setTab] = useState<Tab>("preview");
   const [sourceCollapsed, setSourceCollapsed] = useState(false);
   const taRef = useRef<HTMLTextAreaElement>(null);
+  const previewPaneRef = useRef<HTMLDivElement>(null);
+  const syncingRef = useRef(false);
 
   useEffect(() => {
     taRef.current?.focus();
@@ -109,6 +111,28 @@ export function MarkdownEditor({ content, onChange, settings }: Props) {
     else if (e.code === "Backquote") { e.preventDefault(); wrap("`", "`", "code"); }
   }, [wrap, insertLink]);
 
+  const onSourceScroll = useCallback(() => {
+    if (syncingRef.current) return;
+    const ta = taRef.current;
+    const pane = previewPaneRef.current;
+    if (!ta || !pane) return;
+    const ratio = ta.scrollTop / (ta.scrollHeight - ta.clientHeight || 1);
+    syncingRef.current = true;
+    pane.scrollTop = ratio * (pane.scrollHeight - pane.clientHeight);
+    requestAnimationFrame(() => { syncingRef.current = false; });
+  }, []);
+
+  const onPreviewScroll = useCallback(() => {
+    if (syncingRef.current) return;
+    const ta = taRef.current;
+    const pane = previewPaneRef.current;
+    if (!ta || !pane) return;
+    const ratio = pane.scrollTop / (pane.scrollHeight - pane.clientHeight || 1);
+    syncingRef.current = true;
+    ta.scrollTop = ratio * (ta.scrollHeight - ta.clientHeight);
+    requestAnimationFrame(() => { syncingRef.current = false; });
+  }, []);
+
   const prevent = (e: React.MouseEvent) => e.preventDefault();
 
   const fontStyle = {
@@ -192,12 +216,13 @@ export function MarkdownEditor({ content, onChange, settings }: Props) {
                 value={content}
                 onChange={(e) => onChange(e.target.value)}
                 onKeyDown={onKeyDown}
+                onScroll={onSourceScroll}
                 spellCheck={false}
                 dir="auto"
                 style={fontStyle}
               />
             )}
-            <div className="md-preview-pane">
+            <div className="md-preview-pane" ref={previewPaneRef} onScroll={onPreviewScroll}>
               <div
                 className="md-preview"
                 style={{ fontSize: `${settings.font_size}px`, lineHeight: settings.line_height }}

@@ -11,6 +11,14 @@ import { openFile, saveFile, saveFileAs } from "./lib/fileOps";
 
 const KNOWN_DES = ["KDE", "GNOME", "XFCE", "X-Cinnamon", "MATE", "LXDE", "LXQt", "Pantheon", "Deepin", "Budgie", "Unity"];
 
+function hexAdjust(hex: string, delta: number): string {
+  const h = hex.replace("#", "");
+  return "#" + [0, 2, 4].map((i) => {
+    const c = parseInt(h.slice(i, i + 2), 16);
+    return Math.max(0, Math.min(255, c + delta)).toString(16).padStart(2, "0");
+  }).join("");
+}
+
 export default function App() {
   const {
     settings,
@@ -62,8 +70,21 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKey);
   }, [sidebarOpen]);
 
+  const isDark = settings.theme === "dark";
+  const accent = isDark ? settings.accent_dark : settings.accent_light;
+  const bg = isDark ? settings.bg_dark : settings.bg_light;
+  const bgElevated = hexAdjust(bg, isDark ? 8 : -6);
+  const bgElevated2 = hexAdjust(bg, isDark ? 16 : -12);
+  const dynamicVars = {
+    "--accent": accent,
+    "--accent-2": hexAdjust(accent, isDark ? 10 : -10),
+    "--bg": bg,
+    "--bg-elevated": bgElevated,
+    "--bg-elevated2": bgElevated2,
+  } as Record<string, string>;
+
   return (
-    <div className={`app ${settings.theme}`}>
+    <div className={`app ${settings.theme}${settings.show_grid ? "" : " no-grid"}`} style={dynamicVars}>
       <Header />
       {settings.debug_mode && <DebugConsole />}
       <div className="app-body">

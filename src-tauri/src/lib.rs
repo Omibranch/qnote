@@ -14,6 +14,11 @@ pub struct HistoryEntry {
 
 fn default_version_interval() -> u32 { 10 }
 fn default_debug_mode() -> bool { false }
+fn default_show_grid() -> bool { false }
+fn default_accent_dark() -> String { "#8a9a8c".to_string() }
+fn default_accent_light() -> String { "#3c4d3e".to_string() }
+fn default_bg_dark() -> String { "#111213".to_string() }
+fn default_bg_light() -> String { "#f5f5f0".to_string() }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Settings {
@@ -26,6 +31,16 @@ pub struct Settings {
     pub version_interval_minutes: u32,
     #[serde(default = "default_debug_mode")]
     pub debug_mode: bool,
+    #[serde(default = "default_accent_dark")]
+    pub accent_dark: String,
+    #[serde(default = "default_accent_light")]
+    pub accent_light: String,
+    #[serde(default = "default_bg_dark")]
+    pub bg_dark: String,
+    #[serde(default = "default_bg_light")]
+    pub bg_light: String,
+    #[serde(default = "default_show_grid")]
+    pub show_grid: bool,
 }
 
 impl Default for Settings {
@@ -38,6 +53,11 @@ impl Default for Settings {
             line_height: 1.7,
             version_interval_minutes: 10,
             debug_mode: false,
+            accent_dark: "#8a9a8c".to_string(),
+            accent_light: "#3c4d3e".to_string(),
+            bg_dark: "#111213".to_string(),
+            bg_light: "#f5f5f0".to_string(),
+            show_grid: false,
         }
     }
 }

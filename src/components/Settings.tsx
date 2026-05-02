@@ -200,7 +200,63 @@ export function Settings() {
             </div>
 
               <div className="settings-section">
+                <h3 className="settings-section-title">Colors</h3>
+
+                {(
+                  [
+                    { key: "accent_dark", label: "Accent (dark theme)", def: "#8a9a8c" },
+                    { key: "accent_light", label: "Accent (light theme)", def: "#3c4d3e" },
+                    { key: "bg_dark", label: "Background (dark theme)", def: "#111213" },
+                    { key: "bg_light", label: "Background (light theme)", def: "#f5f5f0" },
+                  ] as { key: keyof SettingsType; label: string; def: string }[]
+                ).map(({ key, label, def }) => (
+                  <div className="settings-row" key={key}>
+                    <label>{label}</label>
+                    <div className="color-picker-row">
+                      <label className="color-swatch" style={{ background: draft[key] as string }}>
+                        <input
+                          type="color"
+                          value={draft[key] as string}
+                          onChange={(e) => updateDraft({ [key]: e.target.value })}
+                        />
+                      </label>
+                      <input
+                        type="text"
+                        className="color-hex-input"
+                        value={draft[key] as string}
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          if (/^#[0-9a-fA-F]{0,6}$/.test(v)) updateDraft({ [key]: v });
+                        }}
+                        maxLength={7}
+                        spellCheck={false}
+                      />
+                      {draft[key] !== def && (
+                        <button className="color-reset-btn" onClick={() => updateDraft({ [key]: def })}>
+                          Reset
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="settings-section">
                 <h3 className="settings-section-title">Developer</h3>
+                <div className="settings-row">
+                  <label>Show grid</label>
+                  <div className="theme-toggle">
+                    {([true, false] as const).map((v) => (
+                      <button
+                        key={String(v)}
+                        className={`theme-btn${draft.show_grid === v ? " active" : ""}`}
+                        onClick={() => updateDraft({ show_grid: v })}
+                      >
+                        {v ? "On" : "Off"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <div className="settings-row">
                   <label>Debug console</label>
                   <div className="theme-toggle">
