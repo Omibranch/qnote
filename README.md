@@ -24,6 +24,8 @@
 
 qnote is a lightweight desktop note editor built with Tauri v2 + React. It supports Markdown with live preview, file history with search, real PDF export, OCR, version history, and a custom-styled frameless window. Works on Linux, Windows, and macOS.
 
+``⭐ Star if useful! ``
+
 ### Features
 
 - Plain text and Markdown (`.md`) editing in one app
@@ -161,6 +163,8 @@ Bundles will be at `src-tauri/target/release/bundle/macos/qnote.app` and `src-ta
 <!-- qnote_logo -->
 <img src='https://i.ibb.co/YByQ9xr6/qnote-logo.jpg'>
 qnote — лёгкий десктопный редактор текстовых заметок на базе Tauri v2 + React. Поддерживает Markdown с живым предпросмотром, историю файлов с поиском, настоящий PDF-экспорт, OCR, историю версий и безрамочное кастомное окно. Работает на Linux, Windows и macOS.
+
+``⭐ Star if useful! ``
 
 ### Возможности
 
