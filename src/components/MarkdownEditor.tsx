@@ -10,6 +10,8 @@ import {
   PanelLeftClose, PanelLeftOpen,
 } from "lucide-react";
 import type { Settings } from "../store/useStore";
+import { useStore } from "../store/useStore";
+import { api } from "../lib/api";
 
 interface Props {
   content: string;
@@ -20,6 +22,7 @@ interface Props {
 type Tab = "preview" | "code";
 
 export function MarkdownEditor({ content, onChange, settings }: Props) {
+  const { filePath } = useStore();
   const [tab, setTab] = useState<Tab>("preview");
   const [sourceCollapsed, setSourceCollapsed] = useState(false);
   const taRef = useRef<HTMLTextAreaElement>(null);
@@ -101,6 +104,26 @@ export function MarkdownEditor({ content, onChange, settings }: Props) {
       ta.setSelectionRange(urlStart, urlStart + 3);
     });
   }, [onChange]);
+
+  const onPaste = useCallback(async (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const imageItem = Array.from(e.clipboardData.items).find((it) => it.type.startsWith("image/"));
+    if (!imageItem) return;
+    e.preventDefault();
+    const file = imageItem.getAsFile();
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const savedPath = await api.savePastedImage(reader.result as string, filePath ?? null);
+        const name = savedPath.replace(/\\/g, "/").split("/").pop() || "image.png";
+        const ta = taRef.current;
+        const s = ta ? ta.selectionStart : content.length;
+        const md = `![image](./${name})`;
+        onChange(content.substring(0, s) + md + content.substring(s));
+      } catch {}
+    };
+    reader.readAsDataURL(file);
+  }, [content, onChange, filePath]);
 
   const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const ctrl = e.ctrlKey || e.metaKey;
@@ -216,6 +239,7 @@ export function MarkdownEditor({ content, onChange, settings }: Props) {
                 value={content}
                 onChange={(e) => onChange(e.target.value)}
                 onKeyDown={onKeyDown}
+                onPaste={onPaste}
                 onScroll={onSourceScroll}
                 spellCheck={false}
                 dir="auto"
@@ -241,6 +265,7 @@ export function MarkdownEditor({ content, onChange, settings }: Props) {
               value={content}
               onChange={(e) => onChange(e.target.value)}
               onKeyDown={onKeyDown}
+              onPaste={onPaste}
               spellCheck={false}
               dir="auto"
               style={fontStyle}

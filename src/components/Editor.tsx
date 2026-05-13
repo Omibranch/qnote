@@ -75,6 +75,26 @@ export function Editor() {
     };
   }, [content, filePath]);
 
+  const handleImagePaste = async (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const imageItem = Array.from(e.clipboardData.items).find((it) => it.type.startsWith("image/"));
+    if (!imageItem) return;
+    e.preventDefault();
+    const file = imageItem.getAsFile();
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const savedPath = await api.savePastedImage(reader.result as string, filePath ?? null);
+        const name = savedPath.replace(/\\/g, "/").split("/").pop() || "image.png";
+        const ta = textareaRef.current;
+        const s = ta ? ta.selectionStart : content.length;
+        const insert = `![image](./${name})`;
+        setContent(content.substring(0, s) + insert + content.substring(s));
+      } catch {}
+    };
+    reader.readAsDataURL(file);
+  };
+
   const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
   const lineCount = content ? content.split("\n").length : 1;
 
@@ -94,6 +114,7 @@ export function Editor() {
           className="editor-textarea"
           value={content}
           onChange={(e) => setContent(e.target.value)}
+          onPaste={handleImagePaste}
           spellCheck={false}
           autoCapitalize="off"
           autoCorrect="off"

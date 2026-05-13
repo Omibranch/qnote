@@ -1,6 +1,10 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
+use std::sync::OnceLock;
+use base64::{Engine as _, engine::general_purpose::STANDARD as BASE64};
+
+static OPEN_FILE_ARG: OnceLock<Option<String>> = OnceLock::new();
 use chrono::{Duration, Utc};
 use serde::{Deserialize, Serialize};
 use sha1::{Digest, Sha1};
@@ -825,6 +829,32 @@ fn exit_app(app: tauri::AppHandle) {
     app.exit(0);
 }
 
+#[tauri::command]
+fn save_pasted_image(base64_data: String, current_file_path: Option<String>) -> Result<String, String> {
+    use std::io::Write;
+
+    let data = base64_data
+        .splitn(2, ',')
+        .nth(1)
+        .unwrap_or(&base64_data);
+    let bytes = BASE64.decode(data).map_err(|e| e.to_string())?;
+
+    let dir = if let Some(ref fp) = current_file_path {
+        PathBuf::from(fp).parent().map(|p| p.to_path_buf()).unwrap_or_else(|| PathBuf::from("."))
+    } else {
+        dirs::document_dir().unwrap_or_else(|| PathBuf::from("."))
+    };
+
+    let ts = Utc::now().timestamp_millis();
+    let file_name = format!("pasted-{}.png", ts);
+    let dest = dir.join(&file_name);
+
+    let mut f = fs::File::create(&dest).map_err(|e| e.to_string())?;
+    f.write_all(&bytes).map_err(|e| e.to_string())?;
+
+    dest.to_str().map(|s| s.to_string()).ok_or_else(|| "invalid path".to_string())
+}
+
 // Handle `qnote ocr <path>` before Tauri starts.
 pub fn handle_cli() -> bool {
     let args: Vec<String> = std::env::args().collect();
@@ -854,7 +884,18 @@ pub fn handle_cli() -> bool {
         println!("qnote {}", env!("CARGO_PKG_VERSION"));
         std::process::exit(0);
     }
+    if args.len() >= 2 && !args[1].starts_with('-') {
+        let path = PathBuf::from(&args[1]);
+        if path.exists() {
+            OPEN_FILE_ARG.set(Some(args[1].clone())).ok();
+        }
+    }
     false
+}
+
+#[tauri::command]
+fn get_open_file_arg() -> Option<String> {
+    OPEN_FILE_ARG.get().and_then(|v| v.clone())
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -893,6 +934,8 @@ pub fn run() {
             read_version,
             delete_version,
             exit_app,
+            get_open_file_arg,
+            save_pasted_image,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

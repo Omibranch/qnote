@@ -34,11 +34,20 @@ export default function App() {
   } = useStore();
 
   useEffect(() => {
-    Promise.all([api.getSettings(), api.getHistory(), api.getDesktopEnv(), api.getPlatform()]).then(([s, h, env, platform]) => {
+    Promise.all([api.getSettings(), api.getHistory(), api.getDesktopEnv(), api.getPlatform(), api.getOpenFileArg()]).then(([s, h, env, platform, cliPath]) => {
       updateSettings(s);
       setHistory(h);
       const isDE = KNOWN_DES.some((de) => (env as string).toUpperCase().includes(de.toUpperCase()));
       setShowWindowControls(isDE || platform === "windows" || platform === "macos");
+      if (cliPath) {
+        const name = (cliPath as string).split("/").pop() || "Untitled";
+        api.readFile(cliPath as string).then((content) => {
+          useStore.getState().openFile(cliPath as string, name, content);
+          api.addToHistory(cliPath as string, name).then(() =>
+            api.getHistory().then(setHistory)
+          );
+        }).catch(() => {});
+      }
     });
   }, []);
 

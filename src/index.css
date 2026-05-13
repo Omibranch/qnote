@@ -396,6 +396,7 @@ body {
 .settings-panel {
   width: 460px;
   max-width: 92vw;
+  max-height: 90vh;
   background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: 20px;

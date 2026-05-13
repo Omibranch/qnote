@@ -111,6 +111,20 @@ Download from the [Releases](https://github.com/Omibranch/qnote/releases) page:
 | PDF export | [typst](https://typst.app) — `sudo pacman -S typst` / [typst releases](https://github.com/typst/typst/releases) |
 | OCR | [tesseract](https://github.com/tesseract-ocr/tesseract) — `sudo pacman -S tesseract tesseract-data-eng tesseract-data-rus` |
 
+### Changelog
+
+#### v0.2.12
+- **Image paste** — paste an image from clipboard in Markdown or plain text editor; it is saved to the file's directory and inserted as `![image](./filename.png)`
+- **Open with / double-click** — passing a file path as a CLI argument now opens that file on startup (`qnote /path/to/file.md`)
+- **Settings panel fix** — all settings sections (Colors, Developer, About) are now inside the scrollable area; the panel no longer overflows on small screens
+
+#### v0.2.11
+- Grid background on by default
+- One-time hint on first launch for the grid
+
+#### v0.2.10
+- Update notification popup on startup
+
 ### Building from source
 
 #### Dependencies (Linux / Windows)
@@ -250,6 +264,20 @@ WebView2 встроен в Windows 11 и устанавливается авто
 |---------|-------------|
 | Экспорт в PDF | [typst](https://typst.app) — `sudo pacman -S typst` / [typst releases](https://github.com/typst/typst/releases) |
 | OCR | [tesseract](https://github.com/tesseract-ocr/tesseract) — `sudo pacman -S tesseract tesseract-data-eng tesseract-data-rus` |
+
+### История версий
+
+#### v0.2.12
+- **Вставка изображений** — вставка картинки из буфера обмена в Markdown или обычном редакторе; файл сохраняется в папку текущего документа и вставляется как `![image](./filename.png)`
+- **Открытие через «Открыть с помощью» / двойной клик** — передача пути к файлу аргументом CLI теперь открывает файл при запуске (`qnote /path/to/file.md`)
+- **Исправление панели настроек** — все разделы настроек (Цвета, Разработчик, О программе) теперь внутри прокручиваемой области; панель больше не вылезает за экран на маленьких окнах
+
+#### v0.2.11
+- Сетка на фоне включена по умолчанию
+- Подсказка при первом запуске
+
+#### v0.2.10
+- Уведомление о доступном обновлении при запуске
 
 ### Сборка из исходников
 

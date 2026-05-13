@@ -204,7 +204,6 @@ export function Settings() {
                   />
                 </div>
               </div>
-            </div>
 
               <div className="settings-section">
                 <h3 className="settings-section-title">Colors</h3>
@@ -302,6 +301,7 @@ export function Settings() {
                   )}
                 </div>
               </div>
+            </div>
 
             <div className="settings-footer">
               <button className="btn-ghost" onClick={handleCancel}>

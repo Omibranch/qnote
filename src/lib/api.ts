@@ -43,6 +43,12 @@ export const api = {
       settings,
     }),
 
+  getOpenFileArg: (): Promise<string | null> =>
+    invoke("get_open_file_arg"),
+
+  savePastedImage: (base64Data: string, currentFilePath: string | null): Promise<string> =>
+    invoke("save_pasted_image", { base64Data, currentFilePath }),
+
   ocrImage: (path: string): Promise<string> =>
     invoke("ocr_image", { path }),
 

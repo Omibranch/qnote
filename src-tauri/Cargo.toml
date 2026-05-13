@@ -1,6 +1,6 @@
 [package]
 name = "qnote"
-version = "0.2.11"
+version = "0.2.12"
 description = "A minimal, beautiful notepad"
 authors = ["Omi"]
 edition = "2021"
@@ -22,3 +22,4 @@ dirs = "5"
 chrono = { version = "0.4", features = ["serde"] }
 pulldown-cmark = { version = "0.12", default-features = false }
 sha1 = "0.10"
+base64 = "0.22"
